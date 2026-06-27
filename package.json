@@ -1,0 +1,165 @@
+{
+  "name": "arip-vscode",
+  "displayName": "ARIP Telemetry & Analytics",
+  "description": "Silent AI usage observability, resource intelligence, and productivity tracking for VS Code.",
+  "version": "1.0.0",
+  "publisher": "arip",
+  "engines": {
+    "vscode": "^1.85.0"
+  },
+  "categories": [
+    "Other"
+  ],
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "main": "./out/activation/extension.js",
+  "contributes": {
+    "viewsContainers": {
+      "activitybar": [
+        {
+          "id": "arip-explorer",
+          "title": "ARIP AI Analytics",
+          "icon": "$(graph-line)"
+        }
+      ]
+    },
+    "views": {
+      "arip-explorer": [
+        {
+          "type": "webview",
+          "id": "arip.sidebar",
+          "name": "Usage Dashboard"
+        }
+      ]
+    },
+    "commands": [
+      {
+        "command": "arip.login",
+        "title": "ARIP: Login"
+      },
+      {
+        "command": "arip.logout",
+        "title": "ARIP: Logout"
+      },
+      {
+        "command": "arip.syncNow",
+        "title": "ARIP: Sync Now"
+      },
+      {
+        "command": "arip.viewAnalytics",
+        "title": "ARIP: View Analytics"
+      },
+      {
+        "command": "arip.openDashboard",
+        "title": "ARIP: Open Dashboard"
+      },
+      {
+        "command": "arip.exportLogs",
+        "title": "ARIP: Export Logs"
+      },
+      {
+        "command": "arip.resetQueue",
+        "title": "ARIP: Reset Queue"
+      },
+      {
+        "command": "arip.testConnection",
+        "title": "ARIP: Test Connection"
+      },
+      {
+        "command": "arip.enableDebugMode",
+        "title": "ARIP: Enable Debug Mode"
+      }
+    ],
+    "configuration": {
+      "title": "ARIP Telemetry Settings",
+      "properties": {
+        "arip.backendUrl": {
+          "type": "string",
+          "default": "https://api.arip.io/v1",
+          "description": "The URL of the ARIP central platform API."
+        },
+        "arip.enableTelemetry": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable collection of anonymous metadata events."
+        },
+        "arip.enableTokenEstimation": {
+          "type": "boolean",
+          "default": true,
+          "description": "Estimate prompt and completion token sizes locally."
+        },
+        "arip.enableCostEstimation": {
+          "type": "boolean",
+          "default": true,
+          "description": "Estimate AI cost per query and aggregate stats locally."
+        },
+        "arip.anonymousMode": {
+          "type": "boolean",
+          "default": true,
+          "description": "When active, completely hides filenames and workspace names, recording only hashes."
+        },
+        "arip.uploadInterval": {
+          "type": "integer",
+          "default": 30,
+          "minimum": 5,
+          "maximum": 300,
+          "description": "Interval (in seconds) to queue and push telemetry batches."
+        },
+        "arip.maxQueueSize": {
+          "type": "integer",
+          "default": 1000,
+          "minimum": 100,
+          "maximum": 10000,
+          "description": "Maximum number of unsynced events stored locally before discarding old events."
+        },
+        "arip.excludedFolders": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [
+            "node_modules",
+            ".git",
+            "dist",
+            "build",
+            ".env"
+          ],
+          "description": "Folder paths relative to workspace root that will be ignored."
+        },
+        "arip.excludedProviders": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "default": [],
+          "description": "List of AI assistant extension names/IDs to skip."
+        },
+        "arip.debugLogging": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable verbose telemetry status logs inside the output channel."
+        }
+      }
+    }
+  },
+  "scripts": {
+    "vscode:prepublish": "npm run compile",
+    "compile": "tsc -p ./",
+    "watch": "tsc -watch -p ./",
+    "pretest": "npm run compile && npm run lint",
+    "lint": "eslint src --ext ts",
+    "test": "node ./out/tests/runTest.js"
+  },
+  "devDependencies": {
+    "@types/mocha": "^10.0.1",
+    "@types/node": "^18.15.11",
+    "@types/vscode": "^1.85.0",
+    "@typescript-eslint/eslint-plugin": "^5.59.0",
+    "@typescript-eslint/parser": "^5.59.0",
+    "eslint": "^8.38.0",
+    "mocha": "^10.2.0",
+    "typescript": "^5.0.4",
+    "@vscode/test-electron": "^2.3.0"
+  }
+}
